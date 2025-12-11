@@ -1,106 +1,241 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <title>Trivandrum Places Checklist</title>
+
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        padding: 20px;
-        background: #f5f5f5;
-    }
-    h1 {
-        text-align: center;
-    }
-    .category {
-        margin-top: 30px;
-        padding: 15px;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 0 8px rgba(0,0,0,0.1);
-    }
-    .place {
-        padding: 5px 0;
-        display: flex;
-        gap: 12px;
-        align-items: center;
-    }
-    .visited {
-        color: green;
-        font-weight: bold;
-    }
-    .not-visited {
-        color: red;
-        font-weight: bold;
-    }
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: #f5f5f5;
+}
+.category-box {
+    background: white;
+    padding: 15px;
+    margin-top: 25px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+.place {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+}
+.visited { color: green; font-weight: bold; }
+.not-visited { color: red; font-weight: bold; }
 </style>
 </head>
 
 <body>
-<h1>Trivandrum Places Checklist</h1>
-<p>📍 Auto-updated from Google Sheet</p>
 
-<div id="content">Loading...</div>
+<h1>Trivandrum Places Checklist</h1>
+<p>✔ Hardcoded base list + ✔ Live user-added list</p>
+
+<div id="hardcoded"></div>
+<div id="community"></div>
 
 <script>
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3LmncwycLdYjhiLqkOEtzRUeidgIAkYM2y9tOc9LrAwOxb9hlCN4nM9Y2FDkrZLmV1w2HY_B7Wac/pub?output=csv";
+// ----------------------------
+// 1. HARDCODED LIST (Your original list)
+// ----------------------------
+const hardcodedData = {
+    "ONE DAY TRIP": [
+        ["Varkala Intl Beach", true],
+        ["Kappil", false],
+        ["Anjengo", false],
+        ["Kulamuttom Lake", false],
+        ["Kadinmkulam Lake", false],
+        ["Aakulam Lake", false],
+        ["Vellayani Lake", false],
+        ["Perumathura", false],
+        ["Veli", false],
+        ["Zoo", false],
+        ["Napier Museum", false],
+        ["Wax Museum", false],
+        ["Shangumugham Beach", true],
+        ["Neeramankara Walkway", false],
+        ["Kovalam Intl Beach", false],
+        ["Hawa Beach", false],
+        ["Pozhikkara Beach", false],
+        ["Samudra Beach Park", false],
+        ["Vizhinjam", true],
+        ["Poovar", false],
+        ["Aruvikkara Dam", false],
+        ["Peppara Dam", false],
+        ["Neyyar Dam", true],
+        ["Meenmutty Dam", false],
+        ["Kottur Ecotourism", false],
+        ["Podiyakala Peppara Vithura", false],
+        ["Amboori", false],
+        ["Bonacaud", false],
+        ["Ponmudi", true],
+        ["Punchakkari", false],
+        ["Palode Botanical Garden", false],
+        ["Sai Gramam", false],
+        ["Aruvikkara Eco Kattakada", false],
+        ["Mayam Neyyar", false],
+        ["Happy Land Water Park", false],
+    ],
 
-async function loadPlaces() {
-    const response = await fetch(CSV_URL);
-    const text = await response.text();
+    "WATERFALLS": [
+        ["Meenmutty Falls Kilimanoor", false],
+        ["Thampurattipara Falls Kilimanoor", false],
+        ["Para Kuzhi Falls Kilimanoor", false],
+        ["Meenmoodu Venjaramoodu", false],
+        ["Erappil Falls Venjaramoodu", false],
+        ["Muthipara Falls Venjaramoodu", false],
+        ["Irinchayam Falls Vembayam", false],
+        ["Mankayam Falls Brimore", false],
+        ["Meenmutty Falls Kallar", false],
+        ["Thavakkal Falls Vithura", false],
+        ["Vazhvanthol Falls Kanithadam", false],
+        ["Bonacaud Falls", false],
+        ["Kalluvaramb Falls Peyad", false],
+        ["Aanakulam Falls Amboori", false],
+        ["Irappam Falls Amboori", false],
+        ["Madasseri Falls Vellarada", false],
+        ["Meenmutty Neyyar", false],
+    ],
 
-    const rows = text.split("\n").map(r => r.split(","));
-    
-    rows.shift(); // remove header row
+    "PALACE": [
+        ["Kilimanoor Palace", false],
+        ["Attingal Palace", false],
+        ["Nedumangad Palace", false],
+        ["Kuthiramalika Palace", false],
+        ["Kanakakunnu Palace", false],
+        ["Kowdiar Palace", true],
+        ["Padmanabhapuram Palace", true],
+        ["Kovalam Palace", false],
+        ["Varkala Palace", false],
+    ],
 
-    const categories = {};
+    "HILL STATIONS": [
+        ["Thampuratti Hill Kilimanoor", false],
+        ["Kadalukaani Hill Thalikuzhi", false],
+        ["Vellanikkal Hill Venjaramoodu", false],
+        ["Vallikadu Hill Venjaramoodu", false],
+        ["Ayyampara Hill Venjaramoodu", false],
+        ["Shiva Hill Venjaramoodu", false],
+        ["Thampuran Hill Vembayam", false],
+        ["Madavoorpara Pothencode", false],
+        ["Aayiravalli Hill Nagaroor", false],
+        ["Thirichittoor Rock Nedumangad", false],
+        ["Chittipara Vithura", false],
+        ["Ponmudi Hill", true],
+        ["Varayadumotta Hill", false],
+        ["Bison Valley Ponmudi", false],
+        ["Sarkar Motta Ponmudi", false],
+        ["Sita Theertham Ponmudi", false],
+        ["Maruthwamala Ponmudi", false],
+        ["Agasthyarkoodam", false],
+        ["Kaalippara Neyyar", false],
+        ["Koonichi Hill Vellarada", false],
+        ["Plankudikavu Vellarada", false],
+        ["Kathirmudi Hill", false],
+        ["Sasthampara Hill", false],
+        ["Kadumbu Para", false],
+        ["Draviyappara", false],
+        ["Nellikkamala", false],
+        ["Njandupara Cave Amboori", false],
+        ["Kurisumala Amboori", false],
+        ["Kannithoonmoodu Amboori", false],
+    ],
 
-    rows.forEach(row => {
-        let category = row[0]?.trim();
-        let place = row[1]?.trim();
-        let visited = row[2]?.trim();
+    "TEMPLE MOSQUE CHURCH": [
+        ["Padmanabhaswamy Temple", false],
+        ["Attukal", false],
+        ["Iscon Temple", false],
+        ["Beemapally", false],
+    ]
+};
 
-        if (!categories[category]) categories[category] = [];
-        
-        categories[category].push({
-            name: place,
-            visited: visited === "Yes"
-        });
-    });
+// ----------------------------
+// 2. RENDER HARDCODED
+// ----------------------------
+function renderHardcoded() {
+    const box = document.getElementById("hardcoded");
 
-    render(categories);
-}
+    for (const cat in hardcodedData) {
+        let div = document.createElement("div");
+        div.className = "category-box";
 
-function render(data) {
-    const container = document.getElementById("content");
-    container.innerHTML = "";
+        div.innerHTML = `<h2>${cat}</h2>`;
 
-    for (const category in data) {
-        const box = document.createElement("div");
-        box.className = "category";
-
-        const title = document.createElement("h2");
-        title.textContent = category;
-        box.appendChild(title);
-
-        data[category].forEach(place => {
-            const row = document.createElement("div");
-            row.className = "place";
-
-            row.innerHTML = `
-                <span>${place.name}</span>
-                <span class="${place.visited ? "visited" : "not-visited"}">
-                    ${place.visited ? "✔ Visited" : "✖ Not Visited"}
-                </span>
+        hardcodedData[cat].forEach(item => {
+            div.innerHTML += `
+                <div class="place">
+                    <span>${item[0]}</span>
+                    <span class="${item[1] ? 'visited':'not-visited'}">
+                        ${item[1] ? "✔ Visited" : "✖ Not Yet"}
+                    </span>
+                </div>
             `;
-            box.appendChild(row);
         });
 
-        container.appendChild(box);
+        box.appendChild(div);
     }
 }
 
-loadPlaces();
+renderHardcoded();
+
+// ----------------------------
+// 3. FETCH LIVE USER-ADDED DATA
+// ----------------------------
+
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3LmncwycLdYjhiLqkOEtzRUeidgIAkYM2y9tOc9LrAwOxb9hlCN4nM9Y2FDkrZLmV1w2HY_B7Wac/pub?output=csv";
+
+async function loadCommunityData() {
+    const res = await fetch(CSV_URL);
+    const text = await res.text();
+    const rows = text.split("\n").map(r => r.split(","));
+
+    rows.shift(); // header removed
+
+    const community = [];
+
+    rows.forEach(r => {
+        const addedBy = r[3]?.trim();
+        if (addedBy && addedBy !== "Anandhu") {
+            community.push({
+                category: r[0],
+                name: r[1],
+                visited: r[2] === "Yes",
+                addedBy: r[3]
+            });
+        }
+    });
+
+    renderCommunity(community);
+}
+
+function renderCommunity(data) {
+    const div = document.getElementById("community");
+
+    let box = document.createElement("div");
+    box.className = "category-box";
+    box.innerHTML = `<h2>Community Added Places</h2>`;
+
+    if (data.length === 0) {
+        box.innerHTML += "<p>No new places added yet.</p>";
+    }
+
+    data.forEach(item => {
+        box.innerHTML += `
+            <div class="place">
+                <span>${item.name} <small>(${item.category})</small></span>
+                <span class="${item.visited ? "visited" : "not-visited"}">
+                    ${item.visited ? "✔ Visited" : "✖ Not Yet"}
+                </span>
+            </div>
+        `;
+    });
+
+    div.appendChild(box);
+}
+
+loadCommunityData();
+
 </script>
 
 </body>
