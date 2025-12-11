@@ -173,13 +173,16 @@ function renderCommunity(list) {
     list.forEach(item => {
         box.innerHTML += `
             <div class="place">
-                ${item.name} <span class="community-badge">${item.addedBy}</span>
+                ${item.name} 
+                <span style="color:#666; font-size:12px;">(${item.category})</span>
+                <span class="community-badge">${item.addedBy}</span>
             </div>
         `;
     });
 
     div.appendChild(box);
 }
+
 
 loadCommunity();
 </script>
