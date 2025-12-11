@@ -35,6 +35,12 @@ h1 {
     border-radius: 4px;
     margin-left: 6px;
 }
+footer {
+    text-align: center;
+    margin-top: 40px;
+    color: #666;
+    font-size: 14px;
+}
 </style>
 </head>
 
@@ -53,13 +59,15 @@ h1 {
   </a>
 </p>
 
-
 <div id="hardcoded"></div>
 <div id="community"></div>
 
+<!-- PapaParse for proper CSV parsing -->
+<script src="https://unpkg.com/papaparse@5.3.2/papaparse.min.js"></script>
+
 <script>
 // ----------------------------
-// 1. HARDCODED LIST (No visited status)
+// 1. HARDCODED LIST
 // ----------------------------
 const hardcodedData = {
     "ONE DAY TRIP": [
@@ -89,15 +97,16 @@ const hardcodedData = {
     ],
 
     "HILL STATIONS": [
-        "Thampuratti Hill Kilimanoor","Kadalukaani Hill Thalikuzhi",
-        "Vellanikkal Hill Venjaramoodu","Vallikadu Hill Venjaramoodu",
-        "Ayyampara Hill Venjaramoodu","Shiva Hill Venjaramoodu","Thampuran Hill Vembayam",
-        "Madavoorpara Pothencode","Aayiravalli Hill Nagaroor","Thirichittoor Rock Nedumangad",
-        "Chittipara Vithura","Ponmudi Hill","Varayadumotta Hill","Bison Valley Ponmudi",
-        "Sarkar Motta Ponmudi","Sita Theertham Ponmudi","Maruthwamala Ponmudi","Agasthyarkoodam",
-        "Kaalippara Neyyar","Koonichi Hill Vellarada","Plankudikavu Vellarada","Kathirmudi Hill",
-        "Sasthampara Hill","Kadumbu Para","Draviyappara","Nellikkamala","Njandupara Cave Amboori",
-        "Kurisumala Amboori","Kannithoonmoodu Amboori"
+        "Thampuratti Hill Kilimanoor","Kadalukaani Hill Thalikuzhi","Vellanikkal Hill Venjaramoodu",
+        "Vallikadu Hill Venjaramoodu","Ayyampara Hill Venjaramoodu","Shiva Hill Venjaramoodu",
+        "Thampuran Hill Vembayam","Madavoorpara Pothencode","Aayiravalli Hill Nagaroor",
+        "Thirichittoor Rock Nedumangad","Chittipara Vithura","Ponmudi Hill",
+        "Varayadumotta Hill","Bison Valley Ponmudi","Sarkar Motta Ponmudi",
+        "Sita Theertham Ponmudi","Maruthwamala Ponmudi","Agasthyarkoodam",
+        "Kaalippara Neyyar","Koonichi Hill Vellarada","Plankudikavu Vellarada",
+        "Kathirmudi Hill","Sasthampara Hill","Kadumbu Para","Draviyappara",
+        "Nellikkamala","Njandupara Cave Amboori","Kurisumala Amboori",
+        "Kannithoonmoodu Amboori"
     ],
 
     "TEMPLE MOSQUE CHURCH": [
@@ -108,9 +117,7 @@ const hardcodedData = {
     ]
 };
 
-// ----------------------------
-// 2. RENDER HARDCODED LIST
-// ----------------------------
+// Render hardcoded list
 function renderHardcoded() {
     const div = document.getElementById("hardcoded");
 
@@ -127,40 +134,37 @@ function renderHardcoded() {
         div.appendChild(box);
     }
 }
-
 renderHardcoded();
 
 // ----------------------------
-// 3. LOAD COMMUNITY DATA
+// 2. LOAD COMMUNITY DATA (PapaParse)
 // ----------------------------
-
-const CSV_URL =
+const CSV_URL = 
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3LmncwycLdYjhiLqkOEtzRUeidgIAkYM2y9tOc9LrAwOxb9hlCN4nM9Y2FDkrZLmV1w2HY_B7Wac/pub?output=csv";
 
-async function loadCommunity() {
-    const res = await fetch(CSV_URL);
-    const text = await res.text();
-    const rows = text.split("\n").map(r => r.split(","));
+function loadCommunity() {
+    Papa.parse(CSV_URL, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+            const community = [];
 
-    rows.shift(); // remove header row
+            results.data.forEach(r => {
+                community.push({
+                    category: r["Category"],
+                    name: r["Place Name"],
+                    addedBy: r["Added By"] || "Anonymous"
+                });
+            });
 
-    const community = [];
-
-    rows.forEach(r => {
-        community.push({
-            category: r[0],
-            name: r[1],
-            addedBy: r[3] || "Anonymous"
-        });
+            renderCommunity(community);
+        }
     });
-
-    renderCommunity(community);
 }
-
 
 function renderCommunity(list) {
     const div = document.getElementById("community");
-
     let box = document.createElement("div");
     box.className = "category-box";
 
@@ -183,8 +187,23 @@ function renderCommunity(list) {
     div.appendChild(box);
 }
 
-
 loadCommunity();
+</script>
+
+<!-- Hidden Visitor Counter -->
+<img src="https://counter.seku.su/counter.svg" style="display:none">
+
+<footer>
+    Page Visits: <span id="visitorCount">Loading...</span>
+</footer>
+
+<script>
+// Visible visitor count
+fetch("https://api.countapi.xyz/hit/trivandrum-places-website/visits")
+  .then(res => res.json())
+  .then(data => {
+      document.getElementById("visitorCount").innerText = data.value;
+  });
 </script>
 
 </body>
