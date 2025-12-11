@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Trivandrum Places Checklist</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f5f5f5;
+    }
+    h1 {
+        text-align: center;
+    }
+    .category {
+        margin-top: 30px;
+        padding: 15px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    .place {
+        padding: 5px 0;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+    }
+    .visited {
+        color: green;
+        font-weight: bold;
+    }
+    .not-visited {
+        color: red;
+        font-weight: bold;
+    }
+</style>
+</head>
+
+<body>
+<h1>Trivandrum Places Checklist</h1>
+<p>📍 Auto-updated from Google Sheet</p>
+
+<div id="content">Loading...</div>
+
+<script>
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3LmncwycLdYjhiLqkOEtzRUeidgIAkYM2y9tOc9LrAwOxb9hlCN4nM9Y2FDkrZLmV1w2HY_B7Wac/pub?output=csv";
+
+async function loadPlaces() {
+    const response = await fetch(CSV_URL);
+    const text = await response.text();
+
+    const rows = text.split("\n").map(r => r.split(","));
+    
+    rows.shift(); // remove header row
+
+    const categories = {};
+
+    rows.forEach(row => {
+        let category = row[0]?.trim();
+        let place = row[1]?.trim();
+        let visited = row[2]?.trim();
+
+        if (!categories[category]) categories[category] = [];
+        
+        categories[category].push({
+            name: place,
+            visited: visited === "Yes"
+        });
+    });
+
+    render(categories);
+}
+
+function render(data) {
+    const container = document.getElementById("content");
+    container.innerHTML = "";
+
+    for (const category in data) {
+        const box = document.createElement("div");
+        box.className = "category";
+
+        const title = document.createElement("h2");
+        title.textContent = category;
+        box.appendChild(title);
+
+        data[category].forEach(place => {
+            const row = document.createElement("div");
+            row.className = "place";
+
+            row.innerHTML = `
+                <span>${place.name}</span>
+                <span class="${place.visited ? "visited" : "not-visited"}">
+                    ${place.visited ? "✔ Visited" : "✖ Not Visited"}
+                </span>
+            `;
+            box.appendChild(row);
+        });
+
+        container.appendChild(box);
+    }
+}
+
+loadPlaces();
+</script>
+
+</body>
+</html>
