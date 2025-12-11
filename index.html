@@ -5,62 +5,228 @@
 <title>Trivandrum Places Collection</title>
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    background: #f7f7f7;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-h1 {
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 60px 20px 40px;
+    color: white;
+    animation: fadeIn 0.8s ease-in;
+}
+
+.hero h1 {
+    font-size: 3em;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.hero .subtitle {
+    font-size: 1.2em;
+    opacity: 0.95;
+    margin-bottom: 30px;
+}
+
+/* Call to Action Button */
+.cta-section {
+    text-align: center;
+    margin: 30px 0 50px;
+}
+
+.cta-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 16px 40px;
+    text-decoration: none;
+    border-radius: 50px;
+    font-size: 1.1em;
+    font-weight: 600;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+}
+
+/* Category Grid */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.category-card {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+    animation: slideUp 0.6s ease-out;
+}
+
+.category-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+}
+
+.category-card h2 {
+    color: #667eea;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #667eea;
+}
+
+.place-item {
+    padding: 12px 16px;
+    margin: 8px 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border-left: 4px solid transparent;
+}
+
+.place-item:hover {
+    transform: translateX(5px);
+    border-left-color: #667eea;
+    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+}
+
+/* Community Section */
+.community-section {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    margin-top: 40px;
+    animation: slideUp 0.8s ease-out;
+}
+
+.community-section h2 {
+    color: #764ba2;
+    font-size: 1.8em;
+    margin-bottom: 25px;
     text-align: center;
 }
-.category-box {
-    background: white;
-    padding: 16px;
-    margin-top: 25px;
-    border-radius: 8px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.08);
-}
-.place {
-    padding: 6px 0;
-    border-bottom: 1px solid #eee;
-}
-.place:last-child {
-    border-bottom: none;
-}
+
 .community-badge {
-    background: #007bff;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 3px 6px;
-    font-size: 11px;
-    border-radius: 4px;
-    margin-left: 6px;
+    padding: 4px 12px;
+    font-size: 0.85em;
+    border-radius: 12px;
+    margin-left: 10px;
+    display: inline-block;
 }
+
+.category-tag {
+    color: #667eea;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+/* Footer */
 footer {
     text-align: center;
-    margin-top: 40px;
-    color: #666;
-    font-size: 14px;
+    padding: 40px 20px;
+    color: white;
+    font-size: 0.95em;
+    margin-top: 60px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading State */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: white;
+    font-size: 1.2em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2em;
+    }
+    
+    .hero .subtitle {
+        font-size: 1em;
+    }
+    
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .cta-button {
+        padding: 14px 30px;
+        font-size: 1em;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<h1>Trivandrum Places Directory</h1>
-<p style="text-align:center;">⭐ A community-powered list of best places in Trivandrum  
-<br>Users can contribute new locations using the Google Form.</p>
+<div class="hero">
+    <h1>🌴 Discover Trivandrum</h1>
+    <p class="subtitle">Your community-powered guide to the best places in Thiruvananthapuram</p>
+</div>
 
-<hr>
+<div class="cta-section">
+    <a href="https://forms.gle/hNbku69a3nmCrVEj7" target="_blank" class="cta-button">
+        ✨ Add Your Favorite Place
+    </a>
+</div>
 
-<h3>Add a New Place:</h3>
-<p>
-  <a href="https://forms.gle/hNbku69a3nmCrVEj7" target="_blank">
-    ➡ Click here to add a place
-  </a>
-</p>
-
-<div id="hardcoded"></div>
-<div id="community"></div>
+<div class="container">
+    <div id="hardcoded" class="categories-grid"></div>
+    <div id="community" class="community-section"></div>
+</div>
 
 <!-- PapaParse for proper CSV parsing -->
 <script src="https://unpkg.com/papaparse@5.3.2/papaparse.min.js"></script>
@@ -122,16 +288,16 @@ function renderHardcoded() {
     const div = document.getElementById("hardcoded");
 
     for (const category in hardcodedData) {
-        let box = document.createElement("div");
-        box.className = "category-box";
+        let card = document.createElement("div");
+        card.className = "category-card";
 
-        box.innerHTML = `<h2>${category}</h2>`;
+        card.innerHTML = `<h2>${category}</h2>`;
 
         hardcodedData[category].forEach(place => {
-            box.innerHTML += `<div class="place">${place}</div>`;
+            card.innerHTML += `<div class="place-item">${place}</div>`;
         });
 
-        div.appendChild(box);
+        div.appendChild(card);
     }
 }
 renderHardcoded();
@@ -165,26 +331,23 @@ function loadCommunity() {
 
 function renderCommunity(list) {
     const div = document.getElementById("community");
-    let box = document.createElement("div");
-    box.className = "category-box";
 
-    box.innerHTML = `<h2>Community Added Places</h2>`;
+    div.innerHTML = `<h2>🌟 Community Contributions</h2>`;
 
     if (list.length === 0) {
-        box.innerHTML += "<p>No community submissions yet.</p>";
+        div.innerHTML += '<p style="text-align:center; color:#666; padding:20px;">No community submissions yet. Be the first to contribute!</p>';
+        return;
     }
 
     list.forEach(item => {
-        box.innerHTML += `
-            <div class="place">
-                ${item.name} 
-                <span style="color:#666; font-size:12px;">(${item.category})</span>
-                <span class="community-badge">${item.addedBy}</span>
+        div.innerHTML += `
+            <div class="place-item">
+                <strong>${item.name}</strong>
+                <span class="category-tag">${item.category}</span>
+                <span class="community-badge">Added by ${item.addedBy}</span>
             </div>
         `;
     });
-
-    div.appendChild(box);
 }
 
 loadCommunity();
@@ -194,7 +357,7 @@ loadCommunity();
 <img src="https://counter.seku.su/counter.svg" style="display:none">
 
 <footer>
-     
+    Page Visits:
     <img 
         src="https://hitwebcounter.com/counter/counter.php?page=21462881&style=0007&nbdigits=3&type=page&initCount=0"
         title="Website Visitor Counter"
