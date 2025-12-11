@@ -2,195 +2,147 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Trivandrum Places Checklist</title>
+<title>Trivandrum Places Collection</title>
 
 <style>
 body {
     font-family: Arial, sans-serif;
     padding: 20px;
-    background: #f5f5f5;
+    background: #f7f7f7;
+}
+h1 {
+    text-align: center;
 }
 .category-box {
     background: white;
-    padding: 15px;
+    padding: 16px;
     margin-top: 25px;
     border-radius: 8px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    box-shadow: 0 0 8px rgba(0,0,0,0.08);
 }
 .place {
-    display: flex;
-    justify-content: space-between;
-    padding: 4px 0;
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
 }
-.visited { color: green; font-weight: bold; }
-.not-visited { color: red; font-weight: bold; }
+.place:last-child {
+    border-bottom: none;
+}
+.community-badge {
+    background: #007bff;
+    color: white;
+    padding: 3px 6px;
+    font-size: 11px;
+    border-radius: 4px;
+    margin-left: 6px;
+}
 </style>
 </head>
 
 <body>
 
-<h1>Trivandrum Places Checklist</h1>
-<p>✔ Hardcoded base list + ✔ Live user-added list</p>
+<h1>Trivandrum Places Directory</h1>
+<p style="text-align:center;">⭐ A community-powered list of best places in Trivandrum  
+<br>Users can contribute new locations using the Google Form.</p>
+
+<hr>
+
+<h3>Add a New Place:</h3>
+<p>
+  <a href="https://forms.gle/hNbku69a3nmCrVEj7" target="_blank">
+    ➡ Click here to add a place
+  </a>
+</p>
+
 
 <div id="hardcoded"></div>
 <div id="community"></div>
 
 <script>
 // ----------------------------
-// 1. HARDCODED LIST (Your original list)
+// 1. HARDCODED LIST (No visited status)
 // ----------------------------
 const hardcodedData = {
     "ONE DAY TRIP": [
-        ["Varkala Intl Beach", true],
-        ["Kappil", false],
-        ["Anjengo", false],
-        ["Kulamuttom Lake", false],
-        ["Kadinmkulam Lake", false],
-        ["Aakulam Lake", false],
-        ["Vellayani Lake", false],
-        ["Perumathura", false],
-        ["Veli", false],
-        ["Zoo", false],
-        ["Napier Museum", false],
-        ["Wax Museum", false],
-        ["Shangumugham Beach", true],
-        ["Neeramankara Walkway", false],
-        ["Kovalam Intl Beach", false],
-        ["Hawa Beach", false],
-        ["Pozhikkara Beach", false],
-        ["Samudra Beach Park", false],
-        ["Vizhinjam", true],
-        ["Poovar", false],
-        ["Aruvikkara Dam", false],
-        ["Peppara Dam", false],
-        ["Neyyar Dam", true],
-        ["Meenmutty Dam", false],
-        ["Kottur Ecotourism", false],
-        ["Podiyakala Peppara Vithura", false],
-        ["Amboori", false],
-        ["Bonacaud", false],
-        ["Ponmudi", true],
-        ["Punchakkari", false],
-        ["Palode Botanical Garden", false],
-        ["Sai Gramam", false],
-        ["Aruvikkara Eco Kattakada", false],
-        ["Mayam Neyyar", false],
-        ["Happy Land Water Park", false],
+        "Varkala Intl Beach","Kappil","Anjengo","Kulamuttom Lake","Kadinmkulam Lake",
+        "Aakulam Lake","Vellayani Lake","Perumathura","Veli","Zoo","Napier Museum",
+        "Wax Museum","Shangumugham Beach","Neeramankara Walkway","Kovalam Intl Beach",
+        "Hawa Beach","Pozhikkara Beach","Samudra Beach Park","Vizhinjam","Poovar",
+        "Aruvikkara Dam","Peppara Dam","Neyyar Dam","Meenmutty Dam","Kottur Ecotourism",
+        "Podiyakala Peppara Vithura","Amboori","Bonacaud","Ponmudi","Punchakkari",
+        "Palode Botanical Garden","Sai Gramam","Aruvikkara Eco Kattakada","Mayam Neyyar",
+        "Happy Land Water Park"
     ],
 
     "WATERFALLS": [
-        ["Meenmutty Falls Kilimanoor", false],
-        ["Thampurattipara Falls Kilimanoor", false],
-        ["Para Kuzhi Falls Kilimanoor", false],
-        ["Meenmoodu Venjaramoodu", false],
-        ["Erappil Falls Venjaramoodu", false],
-        ["Muthipara Falls Venjaramoodu", false],
-        ["Irinchayam Falls Vembayam", false],
-        ["Mankayam Falls Brimore", false],
-        ["Meenmutty Falls Kallar", false],
-        ["Thavakkal Falls Vithura", false],
-        ["Vazhvanthol Falls Kanithadam", false],
-        ["Bonacaud Falls", false],
-        ["Kalluvaramb Falls Peyad", false],
-        ["Aanakulam Falls Amboori", false],
-        ["Irappam Falls Amboori", false],
-        ["Madasseri Falls Vellarada", false],
-        ["Meenmutty Neyyar", false],
+        "Meenmutty Falls Kilimanoor","Thampurattipara Falls Kilimanoor","Para Kuzhi Falls Kilimanoor",
+        "Meenmoodu Venjaramoodu","Erappil Falls Venjaramoodu","Muthipara Falls Venjaramoodu",
+        "Irinchayam Falls Vembayam","Mankayam Falls Brimore","Meenmutty Falls Kallar",
+        "Thavakkal Falls Vithura","Vazhvanthol Falls Kanithadam","Bonacaud Falls",
+        "Kalluvaramb Falls Peyad","Aanakulam Falls Amboori","Irappam Falls Amboori",
+        "Madasseri Falls Vellarada","Meenmutty Neyyar"
     ],
 
     "PALACE": [
-        ["Kilimanoor Palace", false],
-        ["Attingal Palace", false],
-        ["Nedumangad Palace", false],
-        ["Kuthiramalika Palace", false],
-        ["Kanakakunnu Palace", false],
-        ["Kowdiar Palace", true],
-        ["Padmanabhapuram Palace", true],
-        ["Kovalam Palace", false],
-        ["Varkala Palace", false],
+        "Kilimanoor Palace","Attingal Palace","Nedumangad Palace","Kuthiramalika Palace",
+        "Kanakakunnu Palace","Kowdiar Palace","Padmanabhapuram Palace","Kovalam Palace",
+        "Varkala Palace"
     ],
 
     "HILL STATIONS": [
-        ["Thampuratti Hill Kilimanoor", false],
-        ["Kadalukaani Hill Thalikuzhi", false],
-        ["Vellanikkal Hill Venjaramoodu", false],
-        ["Vallikadu Hill Venjaramoodu", false],
-        ["Ayyampara Hill Venjaramoodu", false],
-        ["Shiva Hill Venjaramoodu", false],
-        ["Thampuran Hill Vembayam", false],
-        ["Madavoorpara Pothencode", false],
-        ["Aayiravalli Hill Nagaroor", false],
-        ["Thirichittoor Rock Nedumangad", false],
-        ["Chittipara Vithura", false],
-        ["Ponmudi Hill", true],
-        ["Varayadumotta Hill", false],
-        ["Bison Valley Ponmudi", false],
-        ["Sarkar Motta Ponmudi", false],
-        ["Sita Theertham Ponmudi", false],
-        ["Maruthwamala Ponmudi", false],
-        ["Agasthyarkoodam", false],
-        ["Kaalippara Neyyar", false],
-        ["Koonichi Hill Vellarada", false],
-        ["Plankudikavu Vellarada", false],
-        ["Kathirmudi Hill", false],
-        ["Sasthampara Hill", false],
-        ["Kadumbu Para", false],
-        ["Draviyappara", false],
-        ["Nellikkamala", false],
-        ["Njandupara Cave Amboori", false],
-        ["Kurisumala Amboori", false],
-        ["Kannithoonmoodu Amboori", false],
+        "Thampuratti Hill Kilimanoor","Kadalukaani Hill Thalikuzhi",
+        "Vellanikkal Hill Venjaramoodu","Vallikadu Hill Venjaramoodu",
+        "Ayyampara Hill Venjaramoodu","Shiva Hill Venjaramoodu","Thampuran Hill Vembayam",
+        "Madavoorpara Pothencode","Aayiravalli Hill Nagaroor","Thirichittoor Rock Nedumangad",
+        "Chittipara Vithura","Ponmudi Hill","Varayadumotta Hill","Bison Valley Ponmudi",
+        "Sarkar Motta Ponmudi","Sita Theertham Ponmudi","Maruthwamala Ponmudi","Agasthyarkoodam",
+        "Kaalippara Neyyar","Koonichi Hill Vellarada","Plankudikavu Vellarada","Kathirmudi Hill",
+        "Sasthampara Hill","Kadumbu Para","Draviyappara","Nellikkamala","Njandupara Cave Amboori",
+        "Kurisumala Amboori","Kannithoonmoodu Amboori"
     ],
 
     "TEMPLE MOSQUE CHURCH": [
-        ["Padmanabhaswamy Temple", false],
-        ["Attukal", false],
-        ["Iscon Temple", false],
-        ["Beemapally", false],
+        "Padmanabhaswamy Temple","Attukal","Iscon Temple","Beemapally","Palayam Church",
+        "Vettukadu Church","Palayam Juma Masjid","Eruthavoor Kerala Palani","Karikkakom",
+        "Sarkara Devi","Kaduvayil Juma Masjid","Azhimala Shiva Temple","Chenkal",
+        "St Joseph Shrine Vizhinjam","Sivagiri Varkala","Santhigiri Ashram"
     ]
 };
 
 // ----------------------------
-// 2. RENDER HARDCODED
+// 2. RENDER HARDCODED LIST
 // ----------------------------
 function renderHardcoded() {
-    const box = document.getElementById("hardcoded");
+    const div = document.getElementById("hardcoded");
 
-    for (const cat in hardcodedData) {
-        let div = document.createElement("div");
-        div.className = "category-box";
+    for (const category in hardcodedData) {
+        let box = document.createElement("div");
+        box.className = "category-box";
 
-        div.innerHTML = `<h2>${cat}</h2>`;
+        box.innerHTML = `<h2>${category}</h2>`;
 
-        hardcodedData[cat].forEach(item => {
-            div.innerHTML += `
-                <div class="place">
-                    <span>${item[0]}</span>
-                    <span class="${item[1] ? 'visited':'not-visited'}">
-                        ${item[1] ? "✔ Visited" : "✖ Not Yet"}
-                    </span>
-                </div>
-            `;
+        hardcodedData[category].forEach(place => {
+            box.innerHTML += `<div class="place">${place}</div>`;
         });
 
-        box.appendChild(div);
+        div.appendChild(box);
     }
 }
 
 renderHardcoded();
 
 // ----------------------------
-// 3. FETCH LIVE USER-ADDED DATA
+// 3. LOAD COMMUNITY DATA
 // ----------------------------
 
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3LmncwycLdYjhiLqkOEtzRUeidgIAkYM2y9tOc9LrAwOxb9hlCN4nM9Y2FDkrZLmV1w2HY_B7Wac/pub?output=csv";
+const CSV_URL =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3LmncwycLdYjhiLqkOEtzRUeidgIAkYM2y9tOc9LrAwOxb9hlCN4nM9Y2FDkrZLmV1w2HY_B7Wac/pub?output=csv";
 
-async function loadCommunityData() {
+async function loadCommunity() {
     const res = await fetch(CSV_URL);
     const text = await res.text();
     const rows = text.split("\n").map(r => r.split(","));
 
-    rows.shift(); // header removed
+    rows.shift(); // remove header row
 
     const community = [];
 
@@ -200,8 +152,7 @@ async function loadCommunityData() {
             community.push({
                 category: r[0],
                 name: r[1],
-                visited: r[2] === "Yes",
-                addedBy: r[3]
+                addedBy
             });
         }
     });
@@ -209,24 +160,22 @@ async function loadCommunityData() {
     renderCommunity(community);
 }
 
-function renderCommunity(data) {
+function renderCommunity(list) {
     const div = document.getElementById("community");
 
     let box = document.createElement("div");
     box.className = "category-box";
+
     box.innerHTML = `<h2>Community Added Places</h2>`;
 
-    if (data.length === 0) {
-        box.innerHTML += "<p>No new places added yet.</p>";
+    if (list.length === 0) {
+        box.innerHTML += "<p>No community submissions yet.</p>";
     }
 
-    data.forEach(item => {
+    list.forEach(item => {
         box.innerHTML += `
             <div class="place">
-                <span>${item.name} <small>(${item.category})</small></span>
-                <span class="${item.visited ? "visited" : "not-visited"}">
-                    ${item.visited ? "✔ Visited" : "✖ Not Yet"}
-                </span>
+                ${item.name} <span class="community-badge">${item.addedBy}</span>
             </div>
         `;
     });
@@ -234,8 +183,7 @@ function renderCommunity(data) {
     div.appendChild(box);
 }
 
-loadCommunityData();
-
+loadCommunity();
 </script>
 
 </body>
