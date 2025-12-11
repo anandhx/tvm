@@ -137,7 +137,7 @@ function renderHardcoded() {
 renderHardcoded();
 
 // ----------------------------
-// 2. LOAD COMMUNITY DATA (PapaParse)
+// 2. LOAD COMMUNITY DATA
 // ----------------------------
 const CSV_URL = 
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl3LmncwycLdYjhiLqkOEtzRUeidgIAkYM2y9tOc9LrAwOxb9hlCN4nM9Y2FDkrZLmV1w2HY_B7Wac/pub?output=csv";
@@ -194,22 +194,14 @@ loadCommunity();
 <img src="https://counter.seku.su/counter.svg" style="display:none">
 
 <footer>
-    Page Visits: <span id="visitorCount">Loading...</span>
+    Page Visits:
+    <img 
+        src="https://hitwebcounter.com/counter/counter.php?page=17759972&style=0008&nbdigits=5&type=page&initCount=000" 
+        title="Website Visitor Counter"
+        alt="web counter"
+        border="0"
+    />
 </footer>
-
-<script>
-// Initialize counter if not already created
-fetch("https://api.countapi.xyz/create?namespace=tvm_places&key=visits&value=0")
-  .then(() => fetch("https://api.countapi.xyz/hit/tvm_places/visits"))
-  .then(res => res.json())
-  .then(data => {
-      document.getElementById("visitorCount").innerText = data.value;
-  })
-  .catch(err => {
-      console.error("Error loading counter:", err);
-      document.getElementById("visitorCount").innerText = "Unavailable";
-  });
-</script>
 
 </body>
 </html>
