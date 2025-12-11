@@ -147,18 +147,16 @@ async function loadCommunity() {
     const community = [];
 
     rows.forEach(r => {
-        const addedBy = r[3]?.trim();
-        if (addedBy && addedBy !== "Anandhu") {
-            community.push({
-                category: r[0],
-                name: r[1],
-                addedBy
-            });
-        }
+        community.push({
+            category: r[0],
+            name: r[1],
+            addedBy: r[3] || "Anonymous"
+        });
     });
 
     renderCommunity(community);
 }
+
 
 function renderCommunity(list) {
     const div = document.getElementById("community");
