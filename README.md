@@ -3,7 +3,7 @@ A community-powered collection of the best places in Thiruvananthapuram
 <br> <p align="center"> <img src="https://img.shields.io/badge/Project%20Type-Static%20Site-blue?style=for-the-badge"> <img src="https://img.shields.io/badge/Powered%20By-GitHub%20Pages-green?style=for-the-badge"> <img src="https://img.shields.io/badge/Data-Google%20Sheets-orange?style=for-the-badge"> <img src="https://img.shields.io/badge/Contributions-Welcome-yellow?style=for-the-badge"> </p> <br>
 🚀 Live Website
 
-👉 https://YOUR_USERNAME.github.io/tvm
+👉 https://anandhx.github.io/tvm/
 
 (Replace with your actual GitHub Pages URL)
 
